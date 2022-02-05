@@ -82,7 +82,7 @@ Widget detailsCard(WelcomePage data){
       Text(data.email),
       Text(data.phone),
       Divider(
-              color: Colors.black
+              color: Colors.green
             )
       
     ],
