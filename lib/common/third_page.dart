@@ -1,6 +1,7 @@
-import '/WelcomePage.dart';
-
 import 'package:flutter/material.dart';
+import 'model.dart';
+
+
 class Form1 extends StatefulWidget {
   const Form1({Key? key}) : super(key: key);
   @override
@@ -9,6 +10,7 @@ class Form1 extends StatefulWidget {
 class _FormState extends State<Form1> {
   TextEditingController _name = TextEditingController();
   TextEditingController _email = TextEditingController();
+  TextEditingController _date = TextEditingController();
   TextEditingController _phone = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class _FormState extends State<Form1> {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: _name,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Enter your Name'
                 ),
@@ -31,7 +33,7 @@ class _FormState extends State<Form1> {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: _email,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Enter your Email'
                 ),
@@ -40,16 +42,26 @@ class _FormState extends State<Form1> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
+                controller: _date,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter the date'
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
                 controller: _phone,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Enter your Phone No'
                 ),
               ),
             ),
             ElevatedButton(onPressed: () async{
-              Navigator.pop (context ,WelcomePage(name: _name.text, email: _email.text, phone: _phone.text));
-            }, child: Text('submit'))
+              Navigator.pop (context ,WelcomePage(name: _name.text, email: _email.text,date: _date.text, phone: _phone.text));
+            }, child: const Text('submit'))
           ],
         ),
       ),
