@@ -16,7 +16,9 @@ class _FormState extends State<Form1> {
 
   TextEditingController _name = TextEditingController();
   final TextEditingController _age = TextEditingController();
-  final TextEditingController _bio = TextEditingController();
+  
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _phone = TextEditingController();
   
   GlobalKey<FormState> _key = new GlobalKey();
 
@@ -66,14 +68,24 @@ class _FormState extends State<Form1> {
               ),
               const SizedBox(height: 10.0),
               TextFormField(
-                controller: _bio,
-                validator: _validateBio,
+                controller: _email,
+                validator: _validateEmail,
                 decoration: const InputDecoration(
-                  labelText: 'Bio',
-                  hintText: 'Enter your bio.'
+                  labelText: 'Email',
+                  hintText: 'Enter your email.'
                 ),
               ),
               const SizedBox(height: 10.0),
+              TextFormField(
+                controller: _phone,
+                validator: _validatePhone,
+                decoration: const InputDecoration(
+                  labelText: 'Phone',
+                  hintText: 'Enter your phone number.'
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -82,7 +94,7 @@ class _FormState extends State<Form1> {
                     child: const Text('Save', style: const TextStyle(color: Colors.white, fontSize: 16.0)),
                     onPressed: () async{
                       if(_key.currentState!.validate()){
-                      Navigator.pop (context ,WelcomePage(name: _name.text,age: _age.text,bio: _bio.text ));
+                      Navigator.pop (context ,WelcomePage(name: _name.text,age: _age.text,email:_email.text,phone:_phone.text ));
                         
                       }
                     },
@@ -106,9 +118,26 @@ String? _validateName(String? value){
       return null;
     }
   }
+  String? _validatePhone(String? value) {
+// Indian Mobile number are of 10 digit only
+    if (value?.length != 10)
+      return 'Mobile Number must be of 10 digit';
+    else
+      return null;
+  }
+  
+  String? _validateEmail(String? value) {
+if (value!.isEmpty ||
+                      !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(value)) {
+                    return 'Enter a valid email!';
+                  }
+                  return null;
+                }
+
 
   
-  String? _validateAge(String? value){
+String? _validateAge(String? value){
     String pattern = r'(^[1-9 ]*$)';
     RegExp regExp = new RegExp(pattern);
     if(value?.length == 0){
@@ -118,16 +147,5 @@ String? _validateName(String? value){
     } else {
       return null;
     }
-  }
-
-  String? _validateBio(String? value){
-    if(value?.length == 0){
-      return '*Required Field';
-    } else if((value?.length ?? 0) < 20){ 
-      return 'Bio should be more than 20 charectors';
-    } else {
-      return null;
-    }
-  }
 }
- 
+},
