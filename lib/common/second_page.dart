@@ -51,9 +51,8 @@ Widget detailsCard(WelcomePage data){
 
       
       Text(data.name),
-      Text(data.email),
-      Text(data.date),
-      Text(data.phone),
+      Text(data.age),
+      Text(data.bio),
       const Divider(
               color: Colors.black
             )
