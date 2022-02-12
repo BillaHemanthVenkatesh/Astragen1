@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_const
+// ignore_for_file: unnecessary_const, deprecated_member_use, curly_braces_in_flow_control_structures, prefer_is_empty, prefer_const_constructors, prefer_final_fields
 
 import 'package:flutter/material.dart';
 import 'model.dart';
@@ -14,11 +14,15 @@ class Form1 extends StatefulWidget {
 class _FormState extends State<Form1> {
   
 
-  TextEditingController _name = TextEditingController();
-  final TextEditingController _age = TextEditingController();
+  final TextEditingController _name = TextEditingController();
+
   
   final TextEditingController _email = TextEditingController();
   final TextEditingController _phone = TextEditingController();
+  final TextEditingController _dob = TextEditingController();
+   DateTime currentDate = DateTime.now();
+
+
   
   GlobalKey<FormState> _key = new GlobalKey();
 
@@ -39,7 +43,7 @@ class _FormState extends State<Form1> {
           fontFamily: 'Cera Pro', 
         )),
       ),
-      body: Form(
+      body:Form(
         key: _key,
         autovalidateMode: AutovalidateMode.always,
         // autovalidate: _autoValidate,
@@ -50,29 +54,27 @@ class _FormState extends State<Form1> {
               TextFormField(
                 controller: _name,
                 validator: _validateName,
+                
                 decoration: const InputDecoration(
                   labelText: 'Name',
-                  hintText: 'Enter your name.'
+                  hintText: 'Enter your name.',
+                    icon:const Icon(Icons.person),
+                
+              
                 ),
               ),
               
-              const SizedBox(height: 10.0),
-              TextFormField(
-                controller: _age,
-                validator: _validateAge,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Age',
-                  hintText: 'Enter your age.'
-                ),
-              ),
+              
+              
               const SizedBox(height: 10.0),
               TextFormField(
                 controller: _email,
                 validator: _validateEmail,
                 decoration: const InputDecoration(
                   labelText: 'Email',
-                  hintText: 'Enter your email.'
+                  hintText: 'Enter your email.',
+                  icon:const Icon(Icons.mail),
+                
                 ),
               ),
               const SizedBox(height: 10.0),
@@ -81,11 +83,42 @@ class _FormState extends State<Form1> {
                 validator: _validatePhone,
                 decoration: const InputDecoration(
                   labelText: 'Phone',
-                  hintText: 'Enter your phone number.'
+                  hintText: 'Enter your phone number.',
+                  icon:const Icon(Icons.person),
                 ),
+                
+              ),
+              TextFormField(
+                controller: _dob,
+               
+                decoration: InputDecoration(
+                  labelText: 'dob',
+                  hintText: 'Enter your dob.',
+                 icon:IconButton(onPressed: ()async {
+    final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: currentDate,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2050));
+    if (pickedDate != null && pickedDate != currentDate)
+    setState(() {
+                              DateTime formattedDate = pickedDate;
+                              _dob.text =
+                                  "${formattedDate.day}-${formattedDate.month}-${formattedDate.year}";
+                            });
+      
+  }, icon: const Icon(Icons.calendar_today)),
+                 
+                ),
+                
               ),
               const SizedBox(height: 10.0),
-              
+            
+          
+            
+           
+          
+              const SizedBox(height: 20.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -94,7 +127,7 @@ class _FormState extends State<Form1> {
                     child: const Text('Save', style: const TextStyle(color: Colors.white, fontSize: 16.0)),
                     onPressed: () async{
                       if(_key.currentState!.validate()){
-                      Navigator.pop (context ,WelcomePage(name: _name.text,age: _age.text,email:_email.text,phone:_phone.text ));
+                      Navigator.pop (context ,WelcomePage(name: _name.text,email:_email.text,phone:_phone.text,dob:_dob.text ));
                         
                       }
                     },
@@ -105,16 +138,24 @@ class _FormState extends State<Form1> {
           ),
         ),
       ),
+      
     );
+
   }
+  
+
 
 
 String? _validateName(String? value){
     if(value?.length == 0){
       return '*Required Field';
-    } else if((value?.length ?? 0) < 3){
-      return 'Name is too short';
-    } else {
+    } else if (value!.isEmpty ||
+                      !RegExp(r'^[a-z A-Z]+$').hasMatch(value)){
+                    //allow upper and lower case alphabets and space
+                    return "Enter Correct Name";
+
+    }
+    else{
       return null;
     }
   }
@@ -137,15 +178,5 @@ if (value!.isEmpty ||
 
 
   
-String? _validateAge(String? value){
-    String pattern = r'(^[1-9 ]*$)';
-    RegExp regExp = new RegExp(pattern);
-    if(value?.length == 0){
-      return '*Required Field';
-    } else if(!regExp.hasMatch(value ?? "")) { 
-      return 'Age should be numeric';
-    } else {
-      return null;
-    }
+
 }
-},

@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_new
+
 import 'package:app1/common/model.dart';
 import 'package:app1/common/third_page.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +19,10 @@ class _SecondPageState extends State<SecondPage> {
     
       
     return Scaffold(
+       backgroundColor: Colors.yellow,  
       appBar: AppBar(
         title: const Text('listofusers'),
+          
       ),
       body: (datalist.isEmpty)?
       const Center(
@@ -45,20 +49,39 @@ class _SecondPageState extends State<SecondPage> {
   }
 }
 Widget detailsCard(WelcomePage data){
-  return Column (
-    mainAxisSize:MainAxisSize.min, 
-    children: [
+  return Center(
+    
+      child: SizedBox(
+        
+        height:90,
+        width:250,
+         
+        child: Card(  
+          shape: RoundedRectangleBorder(  
+            borderRadius: BorderRadius.circular(15.0),  
+          ),  
+          color: Colors.red,  
+        elevation: 10,  
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            
+            children: <Widget>[
+              
+            
 
-      
-      Text(data.name),
-      Text(data.age),
-      Text(data.email),
-      Text(data.phone),
+             
+        
+        Text(data.name),
+        
+        Text(data.email),
+        Text(data.phone),
+        Text(data.dob),
      
-      const Divider(
-              color: Colors.black
-            )
-      
+     
+        
     ],
+  ),
+        ),
+      ),
   );
 }

@@ -19,15 +19,39 @@ class _FirstpageState extends State<Firstpage> {
         title: const Text('MyFisrtpage'),
       ),
       body: Center(
-        child: ElevatedButton(
-          child: const Text('Start'),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const SecondPage()),
-            );
-          },
+        child: SizedBox(   
+         child: Column(
+           children:<Widget> [
+             
+             
+                 Container(
+                   child: Image.asset('images/qwe.jpeg'),
+                  padding: const EdgeInsets.all(0.0),
+                  
+               
+                  width: 360.0,
+                  height: 360.0,
+                ), //Container
+               //Pad
+              
+              
+            
+             Container(height: 50),
+             ElevatedButton(
+              child: const Text('Start'),
+       
+    
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SecondPage()),
+                );
+              },
+               ), 
+                 ],
         ),
+         
+         ),
       ),
     );
   }
