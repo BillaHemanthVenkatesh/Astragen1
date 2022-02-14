@@ -1,19 +1,22 @@
-// ignore_for_file: unnecessary_const, deprecated_member_use, curly_braces_in_flow_control_structures, prefer_is_empty, prefer_const_constructors, prefer_final_fields
+// ignore_for_file: unnecessary_const, deprecated_member_use, curly_braces_in_flow_control_structures, prefer_is_empty, prefer_const_constructors, prefer_final_fields, dead_code, unnecessary_new
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'model.dart';
-
+import 'package:app1/util/constants.dart';
 
 class Form1 extends StatefulWidget {
-  const Form1({Key? key}) : super(key: key);
+  final WelcomePage? getdata;
+
+  const Form1({Key? key,this.getdata}) : super(key: key);
   @override
   _FormState createState() => _FormState();
 
-  void onSubmit(TextEditingController name) {}
+  
 }
 class _FormState extends State<Form1> {
   
-
+ 
   final TextEditingController _name = TextEditingController();
 
   
@@ -27,8 +30,14 @@ class _FormState extends State<Form1> {
   GlobalKey<FormState> _key = new GlobalKey();
 
   bool _autoValidate = false;
- 
+
   @override
+  void initState(){
+    if(widget.getdata!=null){
+      _name=TextEditingController(text:widget.getdata?.name);
+      _email=TextEditingController(text:widget.getdata?.email);
+    }
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -45,7 +54,7 @@ class _FormState extends State<Form1> {
       ),
       body:Form(
         key: _key,
-        autovalidateMode: AutovalidateMode.always,
+        
         // autovalidate: _autoValidate,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
@@ -86,8 +95,12 @@ class _FormState extends State<Form1> {
                   hintText: 'Enter your phone number.',
                   icon:const Icon(Icons.person),
                 ),
-                
+                 maxLength:constants.maxlen,
               ),
+
+             
+            
+
               TextFormField(
                 controller: _dob,
                
@@ -127,6 +140,8 @@ class _FormState extends State<Form1> {
                     child: const Text('Save', style: const TextStyle(color: Colors.white, fontSize: 16.0)),
                     onPressed: () async{
                       if(_key.currentState!.validate()){
+                      
+                     
                       Navigator.pop (context ,WelcomePage(name: _name.text,email:_email.text,phone:_phone.text,dob:_dob.text ));
                         
                       }
@@ -137,19 +152,18 @@ class _FormState extends State<Form1> {
             ],
           ),
         ),
+            
       ),
-      
-    );
+    
+        
+        );
 
   }
   
 
 
-
 String? _validateName(String? value){
-    if(value?.length == 0){
-      return '*Required Field';
-    } else if (value!.isEmpty ||
+    if (value!.isEmpty ||
                       !RegExp(r'^[a-z A-Z]+$').hasMatch(value)){
                     //allow upper and lower case alphabets and space
                     return "Enter Correct Name";
@@ -159,12 +173,18 @@ String? _validateName(String? value){
       return null;
     }
   }
+  
   String? _validatePhone(String? value) {
+  
+   
 // Indian Mobile number are of 10 digit only
-    if (value?.length != 10)
-      return 'Mobile Number must be of 10 digit';
-    else
+if (value!.isEmpty || !RegExp(r'^(?:[+0][1-9])?[0-9]{10}$').hasMatch(value))
+      return 'Enter correct mobile number';
+  
+   
+    else{
       return null;
+    }
   }
   
   String? _validateEmail(String? value) {

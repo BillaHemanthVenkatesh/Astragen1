@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_new
+// ignore_for_file: unnecessary_new, prefer_const_constructors
 
 import 'package:app1/common/model.dart';
 import 'package:app1/common/third_page.dart';
@@ -13,6 +13,7 @@ class SecondPage extends StatefulWidget {
 
 class _SecondPageState extends State<SecondPage> {
   List<WelcomePage> datalist =List<WelcomePage>.empty(growable: true);
+  bool _isEnable = false;
   @override
   Widget build(BuildContext context) {
 
@@ -47,14 +48,14 @@ class _SecondPageState extends State<SecondPage> {
         
     );
   }
-}
+
 Widget detailsCard(WelcomePage data){
   return Center(
     
       child: SizedBox(
         
-        height:90,
-        width:250,
+        height:200,
+        width:200,
          
         child: Card(  
           shape: RoundedRectangleBorder(  
@@ -62,22 +63,46 @@ Widget detailsCard(WelcomePage data){
           ),  
           color: Colors.red,  
         elevation: 10,  
+       
+                        
+                          
+      
+      
           child: Column(
             mainAxisSize: MainAxisSize.min,
             
-            children: <Widget>[
-              
             
+            children: <Widget>[
+              new Expanded(child: new Container()),
 
-             
-        
-        Text(data.name),
-        
+              Padding(
+                        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
+                      ),
+        new IconButton(
+                            icon: new Icon(Icons.edit),
+                            onPressed: () async{
+                              final data2=await Navigator.push(context,MaterialPageRoute(builder: (context) =>  Form1(getdata:data)));
+                              if(data2!=null){
+              WelcomePage wel1= data2 as WelcomePage;
+              print('data;$data');
+              datalist.add(wel1);
+              setState( () {});
+            }
+                            },
+                          ),
+        new IconButton(
+                            icon: new Icon(Icons.note_add),
+                            onPressed: () {
+                               Navigator.push(context,MaterialPageRoute(builder: (context) => const Form1()),
+                               );
+                            }
+                          ),   
+        Text(data.name),                
         Text(data.email),
         Text(data.phone),
         Text(data.dob),
-     
-     
+       
+    
         
     ],
   ),
@@ -85,3 +110,5 @@ Widget detailsCard(WelcomePage data){
       ),
   );
 }
+}
+             
