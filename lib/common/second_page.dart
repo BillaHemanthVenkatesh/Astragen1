@@ -14,7 +14,7 @@ class SecondPage extends StatefulWidget {
 class _SecondPageState extends State<SecondPage> {
   List<WelcomePage> datalist = List<WelcomePage>.empty(growable: true);
   bool _isEnable = false;
-  int radioValue = -1;
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +51,7 @@ class _SecondPageState extends State<SecondPage> {
   Widget detailsCard(WelcomePage data) {
     return Center(
       child: SizedBox(
-        height: 180,
+        height: 220,
         width: 200,
         child: Card(
           shape: RoundedRectangleBorder(
@@ -68,8 +68,12 @@ class _SecondPageState extends State<SecondPage> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
                   ),
+                  
+                  
                   new IconButton(
+                    
                     icon: new Icon(Icons.edit),
+                    
                     onPressed: () async {
                       final data2 = await Navigator.push(
                           context,
@@ -98,6 +102,7 @@ class _SecondPageState extends State<SecondPage> {
                   Text(data.phone),
                   Text(data.dob),
                    Text(data.time),
+                   Text(data.gender),
                   
                 ],
               ),

@@ -20,12 +20,15 @@ class _FormState extends State<Form1> {
   TextEditingController _phone = TextEditingController();
   TextEditingController _dob = TextEditingController();
   TextEditingController _time = TextEditingController();
+  
   DateTime currentDate = DateTime.now();
 
   GlobalKey<FormState> _key = new GlobalKey();
 
   bool _autoValidate = false;
   TimeOfDay selectedTime = TimeOfDay.now();
+  String gender='Male';
+
   @override
   void initState() {
     if (widget.getdata != null) {
@@ -34,8 +37,12 @@ class _FormState extends State<Form1> {
       _dob = TextEditingController(text: widget.getdata?.dob);
       _phone = TextEditingController(text: widget.getdata?.phone);
       _time = TextEditingController(text: widget.getdata?.time);
+      gender=widget.getdata?.gender??"Male";
+    
     }
   }
+
+  bool selected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +76,6 @@ class _FormState extends State<Form1> {
                   icon: const Icon(Icons.person),
                 ),
               ),
-              const SizedBox(height: 10.0),
               TextFormField(
                 controller: _email,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -80,7 +86,6 @@ class _FormState extends State<Form1> {
                   icon: const Icon(Icons.mail),
                 ),
               ),
-              const SizedBox(height: 10.0),
               TextFormField(
                 controller: _phone,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -108,14 +113,14 @@ class _FormState extends State<Form1> {
                         if (timeOfDay != null && timeOfDay != selectedTime) {
                           setState(() {
                             selectedTime = timeOfDay;
-                            _time.text ="${selectedTime.hour}:${selectedTime.minute}";
+                            _time.text =
+                                "${selectedTime.hour}:${selectedTime.minute}";
                           });
                         }
                       },
                       icon: const Icon(Icons.schedule)),
                 ),
               ),
-              const SizedBox(height: 10.0),
               TextFormField(
                 controller: _dob,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -123,22 +128,64 @@ class _FormState extends State<Form1> {
                   labelText: 'dob',
                   hintText: 'Enter the dob.',
                   icon: IconButton(
-                      onPressed: () async {
-                        final DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: currentDate,
-                            firstDate: DateTime(2015),
-                            lastDate: DateTime(2050));
-                        if (pickedDate != null && pickedDate != currentDate)
-                          setState(() {
-                            DateTime formattedDate = pickedDate;
-                            _dob.text =
-                                "${formattedDate.day}-${formattedDate.month}-${formattedDate.year}";
-                          });
-                      },
-                      icon: const Icon(Icons.calendar_today),
+                    onPressed: () async {
+                      final DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: currentDate,
+                          firstDate: DateTime(2015),
+                          lastDate: DateTime(2050));
+                      if (pickedDate != null && pickedDate != currentDate)
+                        setState(() {
+                          DateTime formattedDate = pickedDate;
+                          _dob.text =
+                              "${formattedDate.day}-${formattedDate.month}-${formattedDate.year}";
+                        });
+                    },
+                    icon: const Icon(Icons.calendar_today),
+                  ),
                 ),
               ),
+              Text(
+                "please select your gender?",
+                style: TextStyle(fontSize: 18),
+              ),
+              Divider(),
+              ListTile(
+                title: Text("Male"),
+                leading: Radio(
+                    value: "male",
+                    groupValue: gender,
+                    onChanged: (value) {
+                      setState(() {
+                        gender = value.toString();
+                      });
+                    }),
+              ),
+              ListTile(
+                title: Text("Female"),
+                leading: Radio(
+                    value: "female",
+                    groupValue: gender,
+                    onChanged: (value) {
+                      setState(() {
+                        gender = value.toString();
+                      });
+                    }),
+              ),
+              ListTile(
+                title: Text("Other"),
+                leading: Radio(
+                    value: "other",
+                    groupValue: gender,
+                    onChanged: (value) {
+                      setState(() {
+                        gender = value.toString();
+                      });
+                    }),
+              ),
+              Row(
+             
+                children: techChips(),
               ),
               const SizedBox(height: 20.0),
               Row(
@@ -146,6 +193,7 @@ class _FormState extends State<Form1> {
                 children: <Widget>[
                   ElevatedButton(
                     // color: Colors.blue,
+
                     child: const Text('Submit',
                         style: const TextStyle(
                             color: Colors.white, fontSize: 16.0)),
@@ -158,7 +206,8 @@ class _FormState extends State<Form1> {
                                 email: _email.text,
                                 phone: _phone.text,
                                 dob: _dob.text,
-                                time: _time.text));
+                                time: _time.text,
+                                gender:gender));
                       } else if (_validatePhone(_phone.text) != null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('phone no error')),
@@ -182,6 +231,9 @@ class _FormState extends State<Form1> {
   String? _validateName(String? value) {
     if (value!.isEmpty || !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
       //allow upper and lower case alphabets and space
+      Future.delayed(Duration.zero, () {
+        _showDialog(context);
+      });
       return "Enter Correct Name";
     } else {
       return null;
@@ -204,5 +256,70 @@ class _FormState extends State<Form1> {
       return " ";
     }
     return null;
+  }
+
+  _showDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Expanded(
+          child: AlertDialog(
+            title: Text('Alert'),
+            content: Text('Do you want to submit the data?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'YES',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'NO',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  List<Tech> _chipsList = [
+    Tech("REading", Colors.blue, false),
+    Tech("Writing", Colors.red, false),
+    Tech("PLaying", Colors.pinkAccent, false),
+    Tech("Listening to music", Colors.yellow, false),
+    Tech("Swimming", Colors.green, false),
+  ];
+  List<Widget> techChips() {
+    List<Widget> chips = [];
+
+   
+    for (int i = 0; i < _chipsList.length; i++) {
+      Widget item = Padding(
+        padding: const EdgeInsets.only(left: 10, right: 5),
+        child: FilterChip(
+          label: Text(_chipsList[i].label),
+          labelStyle: TextStyle(color: Colors.white),
+          backgroundColor: _chipsList[i].color,
+          selected: _chipsList[i].isSelected,
+          onSelected: (bool value) {
+            setState(() {
+              _chipsList[i].isSelected = value;
+            });
+          },
+        ),
+      );
+      chips.add(item);
+    }
+    return chips;
   }
 }

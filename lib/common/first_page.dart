@@ -22,8 +22,8 @@ class _FirstpageState extends State<Firstpage> {
               Container(
                 child: Image.asset('images/qwe.jpeg'),
                 padding: const EdgeInsets.all(0.0),
-                width: 360.0,
-                height: 360.0,
+                width: 400.0,
+                height: 400.0,
               ), //Container
               //Pad
 
